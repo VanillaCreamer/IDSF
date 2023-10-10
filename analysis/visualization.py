@@ -1,6 +1,7 @@
+import numpy as np
 import umap
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.colors import LinearSegmentedColormap
 from sklearn import manifold
 import seaborn as sns
 import torch
@@ -60,8 +61,12 @@ class TSNEReduction(Reduction):
 
 
 def sns_mapping(matrix, batch_id, filename):
-    fig = sns.heatmap(matrix, square=True, xticklabels=[], yticklabels=batch_id.tolist(), cmap="YlOrRd", cbar=False)
+    colors = ["white", "lemonchiffon", "c", "darkblue"]
+    nodes = [0.0, 0.1, 0.4, 1.0]
+    my_cmap = LinearSegmentedColormap.from_list("mycmap", list(zip(nodes, colors)))
+    fig = sns.heatmap(matrix, square=True,  cmap="YlGnBu")  # linecolor="black", linewidths=1)  # , cbar=False)  # yticklabels=batch_id.tolist() xticklabels=[], yticklabels=[],
     plt.yticks(fontsize=6)
+    plt.xticks(fontsize=6)
     heatmap = fig.get_figure()
     heatmap.savefig("heatmap/{0}.svg".format(filename), dpi=1080)
 
@@ -75,6 +80,7 @@ class Heatmapper(object):
             m1 = m1 / torch.norm(m1, dim=-1, keepdim=True)
             m2 = m2 / torch.norm(m2, dim=-1, keepdim=True)
             sim = torch.mm(m1, m2.T)
+            # sim = sim / torch.norm(sim, dim=1, keepdim=True)
             return sim
 
         def top_k(sim):
@@ -82,6 +88,11 @@ class Heatmapper(object):
             sparse_tensor = torch.zeros_like(sim)
             for i in range(sim.shape[0]):
                 sparse_tensor[i][topk_indices[i]] = topk_values[i]
+
+            # put diagonal as 0
+            # diagonal = np.diag_indices(sparse_tensor.shape[0])
+            # sparse_tensor[diagonal] = 0
+
             return sparse_tensor
 
         if self.k is None:

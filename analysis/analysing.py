@@ -9,7 +9,7 @@ datasets = ["clothing", "baby", "sports"]
 painters = ["scatter", "heatmap"]
 """
 DATASET = "clothing"
-MODAL = "gt"
+MODAL = "image"
 DATA_TYPE = "train"
 BATCH_SIZE = 10
 K = 10
