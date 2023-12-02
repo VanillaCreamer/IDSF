@@ -6,7 +6,7 @@ def parse_args():
 
     parser.add_argument('--data_path', nargs='?', default='./data/',
                         help='Input data path.')
-    parser.add_argument('--seed', type=int, default=3407,
+    parser.add_argument('--seed', type=int, default=123,
                         help='Random seed')
     parser.add_argument('--dataset', nargs='?', default='clothing',
                         help='Choose a dataset from {sports, baby, clothing}')
@@ -23,7 +23,7 @@ def parse_args():
 
     parser.add_argument('--embed_size', type=int, default=128,
                         help='Embedding size.')
-    parser.add_argument('--weight_size', nargs='?', default='[256,256]',
+    parser.add_argument('--weight_size', nargs='?', default='[128,128]',
                         help='Output sizes of every layer')
     parser.add_argument('--core', type=int, default=5,
                         help='5-core for warm-start; 0-core for cold start')
@@ -32,7 +32,7 @@ def parse_args():
     parser.add_argument('--layers', type=int, default=2,
                         help='Number of item graph conv layers')
     parser.add_argument('--max_len', type=int, default=10,
-                        help='Max length of item sequence.')
+                        help='Max length of item sequence (No use).')
 
     parser.add_argument('--sparse', type=int, default=1, help='Sparse or dense adjacency matrix')
     parser.add_argument('--debug', action='store_true')

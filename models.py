@@ -42,8 +42,8 @@ class MIDGCN(nn.Module):
         self.user_fusion = EmbeddingTwoSemantic(self.embedding_dim)
 
         # self.tv_fusion = EmbeddingTwoSemantic(self.embedding_dim)
-        # self.text2item = nn.Linear(text.shape[1], 128)
-        # self.image2item = nn.Linear(image.shape[1], 128)
+        self.content2item = nn.Linear(self.embedding_dim, self.embedding_dim)
+        self.structure2item = nn.Linear(self.embedding_dim, self.embedding_dim)
 
         self.tau = 0.5
 
@@ -115,8 +115,13 @@ class MIDGCN(nn.Module):
 
         # u_g_embeddings = (u_g_embeddings_text + u_g_embeddings_image) / 2
         u_g_embeddings = self.user_fusion(u_g_embeddings_text, u_g_embeddings_image)
-        i_g_embeddings = self.item_fusion(i_g_embeddings_text, i_g_embeddings_image) + \
-            F.normalize(item_fusion_embedding, p=2, dim=1)
+        # i_g_embeddings = self.item_fusion(i_g_embeddings_text, i_g_embeddings_image) + \
+        #     F.normalize(item_fusion_embedding, p=2, dim=1)
+
+        # For Rebuttal
+        item_structure = self.structure2item(self.item_fusion(i_g_embeddings_text, i_g_embeddings_image))
+        item_content = self.content2item(item_fusion_embedding)
+        i_g_embeddings = item_structure + item_content
 
         return u_g_embeddings, i_g_embeddings, \
             image, item2, text, item1, \
