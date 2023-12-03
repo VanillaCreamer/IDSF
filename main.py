@@ -24,8 +24,9 @@ class Trainer(object):
         self.n_users = data_config['n_users']
         self.n_items = data_config['n_items']
         self.task_name = "%s_%s_%s_%s" % (
-        datetime.now().strftime('%m-%d %H:%M'), args.dataset, args.loss_ratio, args.gamma,)
+        datetime.now().strftime('%m-%d %H-%M'), args.dataset, args.loss_ratio, args.gamma)
         self.logger = Logger(filename=self.task_name, is_debug=args.debug)
+        self.logger.logging("task_name: %s" % self.task_name)
         self.logger.logging("PID: %d" % os.getpid())
         self.logger.logging(str(args))
 

@@ -42,8 +42,16 @@ class MIDGCN(nn.Module):
         self.user_fusion = EmbeddingTwoSemantic(self.embedding_dim)
 
         # self.tv_fusion = EmbeddingTwoSemantic(self.embedding_dim)
-        self.content2item = nn.Linear(self.embedding_dim, self.embedding_dim)
-        self.structure2item = nn.Linear(self.embedding_dim, self.embedding_dim)
+        self.content2item = nn.Sequential(
+            nn.Linear(self.embedding_dim, self.embedding_dim),
+            nn.ReLU(),
+            nn.LayerNorm(self.embedding_dim, eps=1e-6)
+        )
+        self.structure2item = nn.Sequential(
+            nn.Linear(self.embedding_dim, self.embedding_dim),
+            nn.ReLU(),
+            nn.LayerNorm(self.embedding_dim, eps=1e-6)
+        )
 
         self.tau = 0.5
 

@@ -6,9 +6,9 @@ def parse_args():
 
     parser.add_argument('--data_path', nargs='?', default='./data/',
                         help='Input data path.')
-    parser.add_argument('--seed', type=int, default=123,
+    parser.add_argument('--seed', type=int, default=2023,
                         help='Random seed')
-    parser.add_argument('--dataset', nargs='?', default='clothing',
+    parser.add_argument('--dataset', nargs='?', default='sports',
                         help='Choose a dataset from {sports, baby, clothing}')
     parser.add_argument('--verbose', type=int, default=5,
                         help='Interval of evaluation.')
